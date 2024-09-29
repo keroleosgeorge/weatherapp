@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/Services/wheatherServices.dart';
@@ -27,7 +28,7 @@ class Search extends StatelessWidget {
             },
             onSubmitted: (value) {
               CityName = value;
-              WeatherServices weatherServices = WeatherServices();
+              WeatherServices weatherServices = WeatherServices(Dio());
               weatherServices.getCityWeather(CityName!);
             },
             decoration: InputDecoration(
@@ -36,7 +37,7 @@ class Search extends StatelessWidget {
               ),
               suffixIcon: IconButton(
                 onPressed: () async {
-                  WeatherServices weatherServices = WeatherServices();
+                  WeatherServices weatherServices = WeatherServices(Dio());
                   WeatherModel weather =
                       await weatherServices.getCityWeather(CityName!);
                   Provider.of<WeatherProvider>(context, listen: false)
