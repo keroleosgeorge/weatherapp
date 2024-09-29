@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/Services/wheatherServices.dart';
 import 'package:weather_app/model/weathermodel.dart';
 
+import '../Cubits/Getweathercubit/getweathercubit_cubit.dart';
 import '../Providers/WeatherProvider.dart';
 
 class Search extends StatelessWidget {
@@ -37,11 +39,9 @@ class Search extends StatelessWidget {
               ),
               suffixIcon: IconButton(
                 onPressed: () async {
-                  WeatherServices weatherServices = WeatherServices(Dio());
-                  WeatherModel weather =
-                      await weatherServices.getCityWeather(CityName!);
-                  Provider.of<WeatherProvider>(context, listen: false)
-                      .WeatherData = weather;
+                  BlocProvider.of<GetweathercubitCubit>(context).getWeather(CityName!);
+                  // Provider.of<WeatherProvider>(context, listen: false)
+                  //     .WeatherData = weather;
 
                   Navigator.pop(context);
                 },

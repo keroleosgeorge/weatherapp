@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/Screens/Home.dart';
 
+import 'Cubits/Getweathercubit/getweathercubit_cubit.dart';
+import 'Cubits/Getweathercubit/getweathercubit_state.dart';
 import 'Providers/WeatherProvider.dart';
 
 void main() {
@@ -15,17 +18,24 @@ class WeatherApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
+    return  BlocProvider<GetweathercubitCubit>(
+  create: (context) => GetweathercubitCubit(),
+  child: BlocBuilder<GetweathercubitCubit, GetweathercubitState>(
+  builder: (context, state) {
+    return MaterialApp(
       home: Home(),
       theme: ThemeData(
-        colorSchemeSeed: Provider.of<WeatherProvider>(context).weatherData == null ? Colors.blue : Provider.of<WeatherProvider>(context).weatherData!.getThemeColor() ,
+        colorSchemeSeed: BlocProvider.of<GetweathercubitCubit>(context).weather == null ? Colors.blue : BlocProvider.of<GetweathercubitCubit>(context).weather!.getThemeColor() ,
         appBarTheme: AppBarTheme(
-          color: Provider.of<WeatherProvider>(context).weatherData == null ? Colors.blue : Provider.of<WeatherProvider>(context).weatherData!.getThemeColor(),
+          color: BlocProvider.of<GetweathercubitCubit>(context).weather == null ? Colors.blue : BlocProvider.of<GetweathercubitCubit>(context).weather!.getThemeColor() ,
         ),
         // colorScheme: ColorScheme.fromSeed(seedColor: Provider.of<WeatherProvider>(context).weatherData == null ? Colors.blue : Provider.of<WeatherProvider>(context).weatherData!.getThemeColor(),),
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
     );
+  },
+),
+);
   }
 }
